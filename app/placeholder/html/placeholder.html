@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>默认文字</title>
+<style>
+	.text1::-webkit-input-placeholder{
+	color:#f0f;
+	}
+	.text1::-moz-placeholder {
+	color:#f0f;
+	}
+	.text1:-ms-input-placeholder {
+	color:#f0f;
+	}
+</style>
+</head>
+
+<body>
+	<input type="text" class="aaa text1" placeholder="请输入用户名" placeholderColor="#f0f"/>
+	<input type="text" class="aaa" placeholder="请输入用户名"/><br/><br/>
+    <textarea rows="10" cols="50" class="ccc" placeholder="请输入用户名"></textarea>
+</body>
+<script type="text/javascript" src="../../../js/jquery.js"></script>
+<script type="text/javascript" src="../js/placeholder.js"></script>
+<script type="text/javascript">
+	$(".aaa").placeholder(); //isUseSpan 是否使用插入span标签模拟placeholder的方式,false为使用value模拟
+	$(".ccc").placeholder({isUseSpan:false});
+</script>
+</html>

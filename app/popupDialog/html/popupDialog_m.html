@@ -1,0 +1,239 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no">
+<title>弹出层移动端</title>
+<style>
+/********************
+      弹出提示框
+**********************/
+.popup_box_box { position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 10000; }
+.popup_box_bg { height:100%;width:100%; background:rgba(0,0,0,0.5);}
+.popup_box{
+	border-radius:4px;
+	background:#fff;
+	width:265px;
+	position:fixed;
+	top:50%;
+	left:50%;
+	transform:translate(-50%,-50%);
+	-webkit-transform:translate(-50%,-50%);
+	}
+.popup_box .popup_top {
+	text-align:center;
+	font-size:22px;
+	color:#222;
+	padding-top:27px;
+	}
+.popup_box .popup_center {
+	text-align:center;
+	font-size:15px;
+	color:#999999;
+	padding:10px 0px;
+	min-height:55px;
+	}
+.popup_box .popup_bottom{
+	display: box;			  /* OLD - Android 4.4- */
+	display: -webkit-box;	  /* OLD - iOS 6-, Safari 3.1-6 */
+	display: -moz-box;		 /* OLD - Firefox 19- (buggy but mostly works) */
+	display: -ms-flexbox;	  /* TWEENER - IE 10 */
+	display: -webkit-flex;	 /* NEW - Chrome */
+	display: flex;			 /* NEW, Spec - Opera 12.1, Firefox 20+ */
+	}
+.popup_box .popup_bottom button{
+	-webkit-box-flex: 1;	  /* OLD - iOS 6-, Safari 3.1-6 */
+	-moz-box-flex: 1;		 /* OLD - Firefox 19- */
+	width: 20%;			   /* For old syntax, otherwise collapses. */
+	-webkit-flex: 1;		  /* Chrome */
+	-ms-flex: 1;			  /* IE 10 */
+	flex: 1;				  /* NEW, Spec - Opera 12.1, Firefox 20+ */
+	height:47px;
+	font-size:18px;
+	border:none;
+	border-top:1px solid #c4c4c4;
+	border-right:1px solid #c4c4c4;
+	background:none;
+	display:block;
+	}
+.popup_box .popup_bottom button:last-child{
+	border-right:none;
+	}
+.popup_box .popup_bottom button.btn1{
+	color:#195ecf;
+	}
+.popup_box .popup_bottom button.btn2{
+	color:#999999;
+	}
+/*样式一*/
+.popup_box_style1{
+	width:200px;
+	background:#fff;
+	border-radius:10px;
+	text-align:center;
+	padding:30px 0px;
+	position:fixed;
+	top:50%;
+	left:50%;
+	transform:translate(-50%,-50%);
+	-webkit-transform:translate(-50%,-50%);
+}
+.popup_box_style1 .icon{
+	width:53px;
+	height:53px;
+	}
+.popup_box_style1 .text{
+	font-size:20px;
+	margin-top:10px;
+	}
+/*样式2*/
+.popup_box_style2{
+	background:rgba(0,0,0,0.9);
+	height:30px;
+	line-height:30px;
+	padding:0px 20px;
+	border-radius:15px;
+	color:#fff;
+	opacity:0;
+	transition:opacity 0.3s;
+	-webkit-transition:opacity 0.3s;
+	position:fixed;
+	top:50%;
+	left:50%;
+	transform:translate(-50%,-50%);
+	-webkit-transform:translate(-50%,-50%);
+	overflow: hidden; 
+	white-space: nowrap; 
+	text-overflow: ellipsis;
+	max-width:90%;
+	box-sizing:border-box;
+	}
+</style>
+</head>
+
+<body>
+	<button id="button1">居中弹出</button><br/><br/>
+	<button id="button2">仿原生弹出</button><br/><br/>
+	<button id="button3">确认框</button><br/><br/>
+</body>
+<script type="text/javascript" src="../js/popupDialog_m.js"></script>
+<script>
+	document.querySelector("#button1").addEventListener("click",function(){
+		new PopupDialogBox({
+			/*内容*/
+			"html":'<div class="popup_box_style1">'+
+						'<img src="../../../images/popupDialog/success.png" class="icon" />'+
+						'<div class="text">注册成功</div>'+
+					'<div>',
+			
+			/*自动消失时间*/
+			//"closeTime":2000,
+			
+			/*关闭时调用*/
+			"closeFn":function(){
+					//console.log("关闭")
+			},
+			
+			/*初始化时调用*/
+			"initFn":function(){
+				//this.popupBox  //整个弹出层
+				//this.popupObj  //内容
+				//this.popupBg  //背景
+				console.log(this.popupObj.innerHTML)
+			}
+		})
+	});
+	
+	document.querySelector("#button2").addEventListener("click",function(){
+		new PopupDialogBox({
+			/*内容*/
+			"html":'<div class="popup_box_style2">删除成功</div>',
+			
+			/*自动消失时间*/
+			"closeTime":1500,
+			
+			"closeAuto":false, //默认为true，按钮点击关闭，为false只能手动关闭 this.close()
+			
+			/*关闭时调用*/
+			"closeFn":function(){
+				//console.log("关闭")
+				var that=this;
+				this.popupObj.style.opacity="0";
+				setTimeout(function(){
+					that.close();
+				},400);	
+			},
+			
+			/*初始化时调用*/
+			"initFn":function(){
+				//this.popupBox  //整个弹出层
+				//this.popupObj  //内容
+				//this.popupBg  //背景
+				console.log(this.popupObj.innerHTML);
+				this.popupObj.style.opacity="1";
+				this.popupBg.parentNode.removeChild(this.popupBg);
+			}
+		})
+	});
+	
+	document.querySelector("#button3").addEventListener("click",function(){
+		new PopupDialogBox({
+			/*标题，为空时顶部没有*/
+			"title":"删除",
+			
+			/****类型，二选一****/
+			/*1.确认框*/
+			"content":'<span style="color:#555;margin-right:18px;">林俊</span>戴氏英语培训学校',
+			/*2.自定义内容*/
+			//"html":"<p>你好</p>",
+			/*3.选择器*/
+			//"selector":"#div",
+			
+			/*是否关闭*/
+			//closeAuto:false,//默认为true，按钮点击关闭，为false只能手动关闭 this.close();
+			
+			/*自定义class*/
+			//className:"xxxx",
+			
+			/*自动消失时间*/
+			//"closeTime":2000,
+			
+			/*底部按钮组*/
+			"buttons":[
+				{
+					"btnType":"1",
+					"text":"确认",
+					//className:"xxxx",
+					"closeFn":function(){
+						console.log("确认")
+					}
+				},
+				{
+					"btnType":"2",
+					"text":"取消",
+					"className":"none",   //比如"box","box none"
+					"closeFn":function(){
+						console.log("取消")
+					}
+				}
+			],
+			
+			/*关闭时调用*/
+			"closeFn":function(){
+				console.log("关闭")
+			},
+			/*初始化后回调函数*/
+			"initFn":function(){
+				//this.popupBox  //整个弹出层
+				//this.popupObj  //内容
+				//this.popupBg  //背景
+				console.log(this.popupObj.innerHTML)	
+			}
+		})
+	});
+
+</script>
+</html>

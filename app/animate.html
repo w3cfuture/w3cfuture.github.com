@@ -1,0 +1,53 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>动画</title>
+<style>
+	body{
+		background:#f1f1f1;	
+	}
+	#div{
+		background:#fff;
+		width:500px;
+		height:400px;
+		margin:20px auto 0px;
+		overflow:auto;	
+		padding:0px 10px;
+	}
+	.btns{
+		margin:10px auto;
+		width:500px;
+		text-align:center;
+	}
+</style>
+</head>
+<body>
+	<div id="div"></div>
+	<div class="btns">
+		<button class="bnt1" onClick="play()">播放</button>
+		<button class="bnt2" onClick="stop()">暂停</button>
+		<button class="bnt3" onClick="empty()">清空</button>
+	</div>
+</body>
+<script type="text/javascript" src="../js/animate.js"></script>
+<script>
+	var s1=new StopWatch({
+		isRunning:false, //初始化是否执行
+		fn:function(time,ftp){
+			var p=document.createElement("p");
+			p.innerHTML="间隔时间："+time+"&nbsp;&nbsp;&nbsp;&nbsp;每秒的频率:"+ftp;
+			document.getElementById("div").appendChild(p);	
+		}	
+	});
+	function play(){
+		s1.play();
+	}
+	function stop(){
+		s1.stop();
+	}
+	function empty(){
+		document.getElementById("div").innerHTML="";
+	}
+</script>
+</html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="jf-CCS3属性获取与设置、HTML5（canvas）操作、浏览器动画、事件（兼容PC和移动端，支持捕获）">
+<meta name="keywords" content="jf,jf.js,js插件,jqeury插件,滑动插件,CCS3属性,canvas操作,滑动事件,浏览器动画,移动端事件,PC端事件,HTML5函数库,HTML5应用,html5网页游戏,CSS3,canvas,html5,JavaScript,HTML5开发,canvas开发">
+<meta name="author" content="赵文印 <zhaowenyinweb@163.com">
+<title>jf.js - jf应用</title>
+<link href="css/common.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+	<!-- 顶部导航 -->
+	<header>
+		<a href="index.html"><span class="header_span">jf</span></a>
+		<ul class="header_nav">
+			<a href="index.html"><li>中文文档</li></a>
+			<a href="app.html"><li class="active">应用</li></a>
+			<a href="jquery_extend.html"><li>jquery扩展</li></a>
+		</ul>
+	</header>
+    <!-- 头部介绍 -->
+	<div class="main">
+		<h1>w3c Future</h1>
+		<div class="main_tro ellip" title="CCS3属性获取与设置、HTML5（canvas）操作、浏览器动画、滑动插件、事件（兼容PC和移动端，支持捕获）">CCS3属性获取与设置、HTML5（canvas）操作、浏览器动画、滑动插件、事件（兼容PC和移动端，支持捕获）</div>
+		<a href="download/jf20160714.zip"><div class="main_bnt" >下载最新版 jf.zip</div></a>
+	</div>
+	<!--文档-->
+	<article class="cf">
+		<!--文档内容-->
+		<div class="col9">
+			<section>
+				<h1 id="move">滑动应用</h1>
+                <h2 id="slide">图片滑动切换</h2>
+				<a class="img_link" target="_blank"><img src="images/slide.jpg" /></a>
+                <p>例如：<a class="url" target="_blank">http://www.wenyinweb.com/app/move/html/img_slide.html</a></p>
+				<h2 id="slideX">横向滑动</h2>
+				<a class="img_link" target="_blank"><img src="images/slideX.jpg" /></a>
+                <p>例如：<a class="url" target="_blank">http://www.wenyinweb.com/app/move/html/slideX.html</a></p>
+				<h2 id="slideY">纵向滑动</h2>
+				<a class="img_link" target="_blank"><img src="images/slideY.jpg" /></a>
+                <p>例如：<a class="url" target="_blank">http://www.wenyinweb.com/app/move/html/slideY.html</a></p>
+                <h2 id="zoom">图片放大</h2>
+				<a class="img_link" target="_blank"><img src="images/zoom.jpg" /></a>
+                <p>例如：<a class="url" target="_blank">http://www.wenyinweb.com/app/move/html/zoom.html</a></p>
+				<h2 id="popupDialog_mobile">一组图片放大查看</h2>
+				<a class="img_link" target="_blank"><img src="images/zoomPictrue.jpg" /></a>
+                <p>例如：<a class="url" target="_blank">http://www.wenyinweb.com/app/move/html/zoomPictrue.html</a></p>
+				<h2 id="fullpage">整页切换</h2>
+				<a class="img_link" target="_blank"><img src="images/fullpage.jpg" /></a>
+                <p>例如：<a class="url" target="_blank">http://www.wenyinweb.com/app/move/html/fullPage.html</a></p>
+				<h2 id="imgDel">图片拖动删除</h2>
+				<a class="img_link" target="_blank"><img src="images/imgDel.jpg" /></a>
+                <p>例如：<a class="url" target="_blank">http://www.wenyinweb.com/app/move/html/imgDel.html</a></p>
+				
+			</section>
+			<section>
+				<h1 id="canvas">canvas</h1>
+				<h2 id="canvas_text">canvas</h2>
+				<a class="img_link" target="_blank"><img src="images/canvas.jpg" /></a>
+                <p>例如：<a class="url" target="_blank">http://www.wenyinweb.com/app/canvas/html/canvas.html</a></p>
+				<h2 id="magnify">放大镜</h2>
+				<a class="img_link" target="_blank"><img src="images/magnify.jpg" /></a>
+                <p>例如：<a class="url" target="_blank">http://www.wenyinweb.com/app/canvas/html/magnify.html</a></p>
+				<h2 id="ggk">刮刮卡</h2>
+				<a class="img_link" target="_blank"><img src="images/ggk.jpg" /></a>
+                <p>例如：<a class="url" target="_blank">http://www.wenyinweb.com/app/canvas/html/ggk.html</a></p>
+				<h2 id="rotate">抽奖转盘</h2>
+				<a class="img_link" target="_blank"><img src="images/rotate.jpg" /></a>
+                <p>例如：<a class="url" target="_blank">http://www.wenyinweb.com/app/canvas/html/rotate.html</a></p>
+                
+				<h2 id="tuodong">拖动圆</h2>
+				<a class="img_link" target="_blank"><img src="images/tuodong.jpg" /></a>
+                <p>例如：<a class="url" target="_blank">http://www.wenyinweb.com/app/canvas/html/dropArc.html</a></p>
+                
+                <h2 id="star">星星</h2>
+				<a class="img_link" target="_blank"><img src="images/star.jpg" /></a>
+                <p>例如：<a class="url" target="_blank">http://www.wenyinweb.com/app/canvas/html/star.html</a></p>
+			</section>
+		</div>
+		<!--右侧导航-->
+		<div class="col3">
+			<ul class="col3_nav">
+				
+			</ul>
+			<a class="back-to-top" href="#top">
+			  返回顶部
+			</a>
+		</div>
+	</article>
+	<!--底部-->
+	<footer>
+		<p>Copyright©2015 w3cfuture.com Corporation, All Rights Reserved. <a href="http://www.miitbeian.gov.cn/" target="_blank">蜀ICP备14003607号-2</a></p>
+		<ul class="footer_ul cf">
+			<li>当前版本： v1.0</li>
+			<li>作者： <a href="http://www.wenyinweb.com" target="_blank">赵文印</a></li>
+			<li>邮箱： 342306219@qq.com 或 zhaowenyinweb@163.com</li>
+			<li>电话： 15508053918</li>
+		</ul>
+	</footer>
+</body>
+<script src="js/jquery.js"></script>
+<script src="js/index.js"></script>
+</html>

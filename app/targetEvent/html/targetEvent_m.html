@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <title>事件目标移动端</title>
+</head>
+<style>
+	*{padding:0px;margin:0px;box-sizing: border-box; -webkit-appearance: none; /*去除系统默认的样式*/ word-break:break-all; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); /* 点击高亮的颜色*/}
+	body{
+		background:#f0f0f0;
+	}
+	ul li{
+		list-style-type:none;
+	}
+	.ul{
+		margin-top:30px;
+	}
+	.li{
+		background:#fff;
+		border-radius:4px;
+		line-height:40px;
+		margin:5px auto 0px;
+		text-align:center;
+		width:80%;
+		color:#333;
+	}
+	.div{
+		line-height:40px;
+		border:1px dotted #ccc;
+		width:80%;
+		margin:10px auto 0px;
+		text-align:center;
+		border-radius:4px;
+		color:#02deb1;
+		}
+</style>
+<body>
+	<ul class="ul">
+		<li class="li">1</li>
+		<li class="li">2</li>
+		<li class="li">3</li>
+	</ul>
+	<div class="div add">+添加</div>
+	<div class="div del">取消事件</div>
+</body>
+<script type="text/javascript" src="../js/targetEvent_m.js"></script>
+<script>
+	var targetEvent1 = new TargetEvent({
+		bindEle:".ul", //事件绑定到什么元素上，默认是document
+		//type:"click",  //绑定的事件类型。默认是touchend
+		className:"li", //当事件传播过程中找到元素（class=className）触发回调函数
+		fn:function(){  //回调函数，this是找到的元素（class=className）
+			alert(this.innerHTML);
+		}
+	});
+	
+	var i=4;
+	document.querySelector(".add").addEventListener("touchend",function(){
+		var li=document.createElement("li");
+		li.innerHTML=i;
+		li.className="li";
+		i++;
+		document.querySelector(".ul").appendChild(li);
+	},false);
+	document.querySelector(".del").addEventListener("touchend",function(){
+		targetEvent1.clear();
+		alert("事件取消成功！");
+	},false);
+</script>
+</html>

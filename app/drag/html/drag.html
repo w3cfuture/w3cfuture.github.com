@@ -1,0 +1,93 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>拖动</title>
+<style>
+	body{ background:#f7f7f7;}
+	.div1{
+		width:500px;
+		height:500px;
+		border:1px solid #aaa;
+		position:absolute;
+		top:20px;
+		left:300px;
+		}
+	.div2{
+		width:200px;
+		text-align:center;
+		background:#fff;
+		position:absolute;
+		top:20px;
+		left:30px;
+		box-shadow:0px 2px 5px #ccc;
+		}
+	.title{
+		line-height:30px;
+		background:#ccc;
+		cursor:move;
+		}
+	.content{
+		line-height:120px;
+		background:#fff;
+		}
+	.div3{
+		width:200px;
+		text-align:center;
+		background:#fff;
+		margin:20px;
+		box-shadow:0px 2px 5px #ccc;
+		}
+</style>
+<script type="text/javascript" src="../../../js/jquery.js"></script>
+<script type="text/javascript" src="../js/drag.js"></script>
+</head>
+
+<body>
+	<div class="div3">
+		<div class="title">标题2</div>
+		<div class="content">内容2</div>
+	</div>
+	<div class="div1">
+		<div class="div2">
+			<div class="title">标题1</div>
+			<div class="content">内容1</div>
+		</div>
+	</div>
+</body>
+<script>
+	$(".div2").drag({
+		minX:0, //left最小值，默认为可视窗口左边
+		maxX:500, //left最大值，默认为可视窗口右边
+		minY:0, //top最小值，默认为可视窗口上边
+		maxY:500, //top最大值，默认为可视窗口下边 
+		dragEle:$(".div2").find(".title")[0], //限制可拖动的区域，默认为整个元素区域
+		startFn:function(){ //开始拖动执行函数
+			console.log(this);
+		},
+		moveFn:function(){  //拖动中执行函数
+			//console.log(this);
+		},
+		endFn:function(){  //结束拖动执行函数
+			console.log(this);
+		}
+	});
+	
+	$(".div3").drag({
+		//minX:0,
+		//maxX:500,
+		//minY:0,
+		//maxY:500,
+		dragEle:$(".div3").find(".title")[0],
+		startFn:function(){
+			console.log(this);
+		},
+		moveFn:function(){
+			//console.log(this);
+		},
+		endFn:function(){
+			console.log(this);
+		}
+	});
+</script>
+</html>

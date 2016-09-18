@@ -1,0 +1,42 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>放大镜</title>
+</head>
+
+<body>
+<canvas class="canvas" height="500" width="1000" style="background:#ccc;"></canvas>
+</body>
+<script src="../../../js/jf.js"></script>
+<script src="../../../js/canvas.js"></script>
+<script>
+	var img=new Image();
+	img.src="../../../images/niao.jpg";
+	var r=100,num=2;
+	var cobj=f(".canvas");
+	var box = cobj[0].getBoundingClientRect();
+	var	offsetTop=box.top + window.pageYOffset;
+	var	offsetLeft=box.left + window.pageXOffset;
+	img.onload=function(){
+		cobj.getContext2D();
+		cobj.draw(img,0,0);
+		
+		cobj[0].addEventListener("mousemove",function(e){
+			var x=e.pageX-offsetLeft;
+			var y=e.pageY-offsetTop;
+			f(this).clearRect();
+			f(this).draw(img,0,0);
+			f(this).save();
+			f(this).arc([x,y,r,0,360,false],{type:""});
+			f(this).clip();
+			f(this).draw(this,x-r/num,y-r/num,r*2/num,r*2/num,x-r,y-r,r*2,r*2);
+			f(this).restore();
+		},false)
+		cobj[0].addEventListener("mouseleave",function(e){
+			f(this).draw(img,0,0);
+		},false)
+	}
+	
+</script>
+</html>

@@ -1,0 +1,130 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>图片拖动删除</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no">
+<style type="text/css">
+/*Reset*/
+body,div,h1,h2,h3,h4,h5,h6,hr,p,blockquote,dl,dt,dd,ul,ol,li,pre,form,fieldset,legend,button,input,textarea,th,td{margin:0;padding:0;border:0;}
+article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block;}
+body{font:12px 微软雅黑, Arial, sans-serif; -webkit-text-size-adjust:none; -webkit-user-select:none;}
+ul,ol{list-style:none;}
+a{text-decoration:none;}
+a:hover{text-decoration:none;}
+q:before,q:after{content:''}
+fieldset,img{border:0;}
+/*清除浮动*/
+.cf:after{
+	content:"";
+	height:0px;
+	display:block;
+	clear:both;
+	visibility:hidden;
+}
+</style>
+<style type="text/css">
+	.img_del_box{
+		width:150px;height:100px;float:left; 
+		position:relative;
+		margin:10px 0px 0px 10px;
+	}
+	.img_del_box .text{
+		width:100%;
+		height:100%;
+		background:rgba(0,0,0,0.2);
+		position:absolute;
+		top:0px;
+		left:0px;
+		line-height:100px;
+		text-align:center;
+		color:#fff;
+		z-index:2;
+	}
+	.img{width:100%;height:100%;
+		transform-origin:center center;
+		position:absolute;
+		z-index:3;
+		/*Chrome渲染Transition时页面闪动Bug*/
+		-webkit-transform-style:preserve-3d;
+		}
+	
+</style>
+
+</head>
+<body>
+	<div class="img_del_box">
+    	<div class="text">拖动删除</div>
+   		<img src="../../../images/1.jpg" class="img">
+    </div>
+    <div class="img_del_box">
+    	<div class="text">拖动删除</div>
+   		<img src="../../../images/2.jpg" class="img">
+    </div>
+    <div class="img_del_box">
+    	<div class="text">拖动删除</div>
+   		<img src="../../../images/3.jpg" class="img">
+    </div>
+    <div class="img_del_box">
+    	<div class="text">拖动删除</div>
+   		<img src="../../../images/4.jpg" class="img">
+    </div>
+    <div class="img_del_box">
+    	<div class="text">拖动删除</div>
+   		<img src="../../../images/5.jpg" class="img">
+    </div>
+</body>
+<script src="../../../js/jf.js"></script>
+<script src="../../../js/css3.js"></script>
+<script src="../../../js/move.js"></script>
+<script>
+	f(".img").each(function(){
+		f(this).move({
+			onRefresh:function(){
+				f(this.ele).css('transform',"translate(0px,0px) translateZ(0px)");
+				f(this.ele).css('transitionDuration',"0s");
+			},
+			startFn:function(obj){
+				f(".img").css("zIndex",'3');
+				f(this.ele).css("zIndex",'4');
+				f(this.ele).css('transformOrigin',"center center");
+				f(this.ele).css('transform',"translate(0px,0px) scale(0.9,0.9) translateZ(0px)");
+			},
+			moveFn:function(obj,isScrolling){
+				event.preventDefault();
+				f(this.ele).css("transform","translate("+(obj.startPointX+obj.x)+"px,"+(obj.startPointY+obj.y)+"px) scale(0.9,0.9) translateZ(0px)");
+				var z=Math.sqrt(obj.x*obj.x+obj.y*obj.y);
+				if(z>100){
+					this.ele.parentNode.querySelector(".text").innerHTML="松开删除";
+				}else{
+					this.ele.parentNode.querySelector(".text").innerHTML="拖动删除";
+				}
+			},
+			endFn:function(obj,isScrolling){
+				var that=this;
+				var x=obj.translateX-obj.startPointX;
+				var y=obj.translateY-obj.startPointY;
+				
+				var z=Math.sqrt(x*x+y*y);
+				if(z>100){
+					that.ele.parentNode.removeChild(this.ele.parentNode.querySelector(".text"));
+					f(that.ele).css('transformOrigin',"0px 0px");
+					f(that.ele).css('transitionDuration',"500ms");
+					f(that.ele).css('transform',"translate(0px,0px) scale(0.1,0.1) translateZ(0px)");
+					f(that.ele).css('opacity',"0");
+					setTimeout(function(){
+						that.ele.parentNode.parentNode.removeChild(that.ele.parentNode);
+					},500);
+				}else{
+					f(that.ele).css("transform","translate("+(obj.startPointX)+"px,"+(obj.startPointY)+"px) scale(1,1) translateZ(0px)");
+				}
+			}
+		});
+	});
+	//阻止PC端默认事件
+	document.addEventListener("mousemove",function(e){e.preventDefault();},false);
+</script>
+</html>

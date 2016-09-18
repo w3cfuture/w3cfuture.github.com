@@ -1,0 +1,125 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no">
+<title>统计表</title>
+<title>转盘</title>
+<style>
+html,body,div,a,img,span,p,ul,li,h1,h2,h3,h4,h5,h6,table{margin:0px;padding:0px;list-style-type:none;text-decoration:none;}
+.box{
+	position:relative;
+	margin:50px;
+	}
+.canvas1,.canvas2,.canvas3,.canvas4{
+	background:#ccc;
+	width:220px;
+	height:220px;
+	}
+</style>
+</head>
+
+<body>
+<div class="box">
+	<canvas class="canvas1" height="110" width="110"></canvas>
+	<canvas class="canvas2" height="220" width="220"></canvas> 
+	<canvas class="canvas3" height="440" width="440"></canvas> 
+	<canvas class="canvas4" height="880" width="880"></canvas> 
+</div>
+</body>
+
+<script src="../../../js/jf.js"></script>
+<script src="../../../js/canvas.js"></script>
+<script src="../../../js/animate.js"></script>
+<script src="../js/jf-chart.js"></script>
+<script>
+
+	/****************
+		调用方式
+	****************/
+	//原始数据
+	var original=[50,30,20];
+	
+	//颜色
+	var colorArr=["#eb3535","#eb6035","#ebcf35","#b1eb35","#35eb39","#35ebd8","#358beb","#e935eb"];
+	
+	//默认
+	new fChart(".canvas2",{
+		colors:colorArr,  //颜色组
+		percents:original,  //数据组
+		//x:110,  //x坐标
+		//y:110,	//y坐标
+		//radius:100,	//圆半径
+		//scale:1,	//缩小或放大
+		//textPos:75,	//字体离圆心位置
+		//font:"14px Arial",	//字体样式
+		//minPercent:8,  //最小百分比
+		//translate:5,  //位移距离
+		//rotateSpend:1,  //旋转速度
+		//translateSpend:1, //位移速度
+		//index:null,  //初始化第几个被选中
+		fn:function(i){  //点击执行，i为点击的哪一个
+			console.log(i);
+		},
+		animatedFn:function(i){  //动画结束执行
+			console.log(i+"aaa");
+		}
+	});
+	
+	new fChart(".canvas1",{
+		colors:colorArr,  //颜色组
+		percents:original,  //数据组
+		x:55,  //x坐标
+		y:55,	//y坐标
+		radius:50,	//圆半径
+		scale:2,	//缩小或放大
+		textPos:37.5,	//字体离圆心位置
+		font:"7px Arial",	//字体样式
+		minPercent:8,  //最小百分比
+		translate:2.5,  //位移距离
+		rotateSpend:1,  //旋转速度
+		translateSpend:1, //位移速度
+	});
+	
+	new fChart(".canvas3",{
+		colors:colorArr,  //颜色组
+		percents:original,  //数据组
+		x:220,  //x坐标
+		y:220,	//y坐标
+		radius:200,	//圆半径
+		scale:0.5,	//缩小或放大
+		textPos:150,	//字体离圆心位置
+		font:"28px Arial",	//字体样式
+		minPercent:8,  //最小百分比
+		translate:10,  //位移距离
+		rotateSpend:2,  //旋转速度
+		translateSpend:2, //位移速度
+	});
+	
+	//性能最好
+	new fChart(".canvas4",{
+		colors:colorArr,  //颜色组
+		percents:original,  //数据组
+		x:440,  //x坐标
+		y:440,	//y坐标
+		radius:400,	//圆半径
+		scale:0.25,	//缩小或放大
+		textPos:300,	//字体离圆心位置
+		font:"56px Arial",	//字体样式
+		minPercent:8,  //最小百分比
+		translate:20,  //位移距离
+		rotateSpend:4,  //旋转速度
+		translateSpend:4, //位移速度
+	});
+	
+	
+	
+	
+	
+	
+	
+</script>
+</html>

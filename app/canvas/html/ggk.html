@@ -1,0 +1,99 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no">
+<title>刮刮卡</title>
+<style>
+html,body,div,a,img,span,p,ul,li,h1,h2,h3,h4,h5,h6,table{margin:0px;padding:0px;list-style-type:none;text-decoration:none;}
+.box{position:relative;width:300px;height:300px;}
+.box .img{position:absolute;left:0px;right:0px;top:0px;bottom:0px;margin:auto; max-height:100%; max-width:100%;}
+.box .canvas{position:absolute;top:0px;left:0px; z-index:2}
+.box .divCanvas{position:absolute;top:0px;left:0px;right:0px;bottom:0px; z-index:2; background:#ccc;}
+</style>
+</head>
+<body>
+    <div class="box">
+		<img src="../../../images/popupDialog/success.png" class="img">
+        <canvas class="canvas" height="300" width="300">
+			<div class="divCanvas" id="divCanvas"></div>
+		</canvas> 
+    </div>
+</body>
+<script src="../../../js/jf.js"></script>
+<script src="../../../js/canvas.js"></script>
+<script>
+	//判断是pc端还是移动端
+	var isTouchPad = (/hp-tablet/gi).test(navigator.appVersion),
+		hasTouch = 'ontouchstart' in window && !isTouchPad,
+		START_EV = hasTouch ? 'touchstart' : 'mousedown',
+		MOVE_EV = hasTouch ? 'touchmove' : 'mousemove',
+		END_EV = hasTouch ? 'touchend' : 'mouseup';
+		
+	if (!document.createElement('canvas').getContext) {
+		document.getElementById("divCanvas").onclick=function(){
+			this.parentNode.removeChild(this);
+			isWinFn();
+		}
+	}else{
+		var count=0;
+		var startPos;
+		f('.canvas').getContext2D();
+		f('.canvas').rect([0,0,300,300],{type:"fill",color:{color:'#ccc'}});
+		f('.canvas').mixImage("destination-out");
+		
+		//滑动
+		function _move(event){
+			event.preventDefault();
+			var touch = hasTouch ? event.targetTouches[0] : event;
+			var x=touch.pageX - startPos.left;
+			var y=touch.pageY - startPos.top;
+			count++;
+			f('.canvas').arc([x,y,20,0,360]);
+			if(count%50==0){
+				clearRect();
+			}
+		}
+		//结束
+		function _end(event){
+			document.removeEventListener(MOVE_EV,_move,false);
+			document.removeEventListener(END_EV,_end,false);
+		}
+		//开始
+		document.querySelector(".canvas").addEventListener(START_EV,function(e){
+			var box = this.getBoundingClientRect();
+			//取第一个touch的坐标值
+			startPos = {
+				top:box.top + window.pageYOffset,
+				left:box.left + window.pageXOffset
+			};
+			document.addEventListener(MOVE_EV,_move,false);
+			document.addEventListener(END_EV,_end,false);
+		},false);
+		
+		
+		function clearRect(){
+			var datas = f('.canvas').getImage();
+			var num = 0;
+			for (var i = 0; i < datas.data.length; i++) {
+				if (datas.data[i] == 0) {
+					num++;
+				};
+			}
+			if (num >= datas.data.length * 0.5) {  //刮出百分之五十
+				f('.canvas').clearRect();
+				
+				//刮开之后执行函数
+				isWinFn();
+			}
+		}
+	}
+	
+	function isWinFn(){
+		alert("成功");
+	}
+</script>
+</html>

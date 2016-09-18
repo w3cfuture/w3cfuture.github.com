@@ -1,0 +1,93 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no">
+<title>拖动圆</title>
+<style>
+	*{padding:0px; margin:0px;}
+	body{overflow:hidden;}
+</style>
+</head>
+
+<body>
+<canvas class="canvas" style="background:#ccc;"></canvas> 
+</body>
+<script src="../../../js/jf.js"></script>
+<script src="../../../js/canvas.js"></script>
+<script type="text/javascript">
+    var w=window.innerWidth;
+    var h=window.innerHeight;
+	f(".canvas")[0].width=w;
+	f(".canvas")[0].height=h;
+	
+	f(".canvas").getContext2D();
+	var arr=[];
+	var maxR=40;
+	for(var i=0;i<10;i++){ 
+		var arcArr={
+			x:maxR+(w-maxR*2)*Math.random(),
+			y:maxR+(h-maxR*2)*Math.random(),
+			r:20+(maxR-20)*Math.random(),
+			startA:0,
+			endA:360,
+			color:"rgb("+parseInt(Math.random()*255)+","+parseInt(Math.random()*255)+","+parseInt(Math.random()*255)+")"
+		};
+		arr.push(arcArr);
+	}
+	for(var i=0;i<arr.length;i++){
+		f(".canvas").arc([arr[i].x,arr[i].y,arr[i].r,arr[i].startA,arr[i].endA],{color:{color:arr[i].color}});
+	}
+	
+	
+	
+	//判断是pc端还是移动端
+	var isTouchPad = (/hp-tablet/gi).test(navigator.appVersion),
+		hasTouch = 'ontouchstart' in window && !isTouchPad,
+		START_EV = hasTouch ? 'touchstart' : 'mousedown',
+		MOVE_EV = hasTouch ? 'touchmove' : 'mousemove',
+		END_EV = hasTouch ? 'touchend' : 'mouseup';
+
+	var startPos;
+	var obj;
+	//滑动
+	function _move(event){
+		event.preventDefault();
+		var touch = hasTouch ? event.targetTouches[0] : event;
+		var x=touch.pageX - startPos.left;
+		var y=touch.pageY - startPos.top;
+		f(".canvas").clearRect();
+		if(obj){
+			obj.x=x;
+			obj.y=y;
+		}
+		for(var i=0;i<arr.length;i++){
+			f(".canvas").arc([arr[i].x,arr[i].y,arr[i].r,arr[i].startA,arr[i].endA],{color:{color:arr[i].color}});
+			if(!obj && f(".canvas").cobj().isPointInPath(x,y)){
+				obj=arr[i];
+			}
+		}
+		
+	}
+	//结束
+	function _end(event){
+		document.removeEventListener(MOVE_EV,_move,false);
+		document.removeEventListener(END_EV,_end,false);
+	}
+	//开始
+	document.querySelector(".canvas").addEventListener(START_EV,function(e){
+		obj=null;
+		var box = this.getBoundingClientRect();
+		//取第一个touch的坐标值
+		startPos = {
+			top:box.top + window.pageYOffset,
+			left:box.left + window.pageXOffset
+		};
+		document.addEventListener(MOVE_EV,_move,false);
+		document.addEventListener(END_EV,_end,false);
+	},false);
+</script>
+</html>

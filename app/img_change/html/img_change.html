@@ -1,0 +1,124 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>图片切换</title>
+<style>
+html, body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, form, fieldset, input, textarea, p, th, td, img, label, button, span, a, i, em, b, strong { margin: 0; padding: 0; word-break: break-all; font-family: Microsoft YaHei, "微软雅黑"; }
+/*
+ *  ul 列表默认样式
+**/
+ul li { list-style-type: none; }
+
+
+.imgBoxDiv{
+	position:relative;
+	width:700px;
+	height:280px;
+	margin:20px auto;
+	}
+
+.imgBoxDiv .imgBox{
+	width:100%;
+	height:100%;
+	overflow:hidden;
+	position:relative;
+	}
+.imgBoxDiv .imgs{
+	position:absolute;
+	top:0px;
+	left:0px;
+	width:100%;
+	height:100%;
+	}
+.imgBoxDiv .imgs .li{
+	float:left;
+	width:100%;
+	height:100%;
+	}
+.imgBoxDiv .imgs .img{
+	width:100%;
+	height:100%;
+	}
+.imgBoxDiv .imgDot{
+	position:absolute;
+	bottom:14px;
+	width:100%;
+	text-align:center;
+	}
+.imgBoxDiv .imgDot li{
+	display:inline-block;
+	margin:0px 5px;
+	width:12px;
+	height:12px;
+	border-radius:50%;
+	background:#d4d5d8;
+	cursor:pointer;
+	}
+.imgBoxDiv .imgDot li:hover{
+	background:#e8e9ec;
+	}
+.imgBoxDiv .imgDot li.selected{
+	background:#ff6000;
+	}
+.imgBoxDiv .imgLeft,.imgBoxDiv .imgRight{
+	  position: absolute;
+	  top: 50%;
+	  margin-top: -29px;
+	  z-index: 1;
+	  width: 58px;
+	  height: 58px;
+	  border-radius:50%;
+	  line-height: 58px;
+	  background: #808080;
+	  background: rgba(0,0,0,0.2);
+	  color: #fff;
+	  text-align: center;
+	  font-size: 35px;
+	  font-weight: normal;
+	  font-family: "simsun";
+	  cursor:pointer;
+	  display:none;
+	}
+.imgBoxDiv .imgRight{
+	right:22px;
+	}
+.imgBoxDiv .imgLeft{
+	left:22px;
+	}
+.imgBoxDiv:hover .imgLeft,.imgBoxDiv:hover .imgRight{
+	display:block;
+	}
+</style>
+</head>
+
+<body>
+	<div class="imgBoxDiv"> <!--可修改-->
+        <div class="imgBox">
+            <ul class="imgs">
+                <li class="li"><img src="../../../images/1.jpg" class="img"/></li>
+                <li class="li"><img src="../../../images/2.jpg" class="img"/></li>
+                <li class="li"><img src="../../../images/3.jpg" class="img"/></li>
+                <li class="li"><img src="../../../images/4.jpg" class="img"/></li>
+                <li class="li"><img src="../../../images/5.jpg" class="img"/></li>
+            </ul>
+        </div>
+        <div class="imgLeft">&lt;</div>
+        <div class="imgRight">&gt;</div>
+        <ul class="imgDot">
+        </ul>
+    </div>
+</body>
+<script src="../../../js/jquery.js"></script>
+<script src="../js/img_change.js"></script>
+<script>
+	$(".imgBoxDiv").imgChange({
+		//autoplay:false,  //是否自动播放,默认为 是
+		//animate:false,  //图片切换是否有动画,默认为 有
+		//index:1,  //初始化显示第几张,默认为 0
+		//time:3000,  //自动播放时间间隔,默认为 5000
+		//resize:false, //窗口变化的时候是否要重新计算此组件,默认为 否
+		//indexLi:".ul li"  //可以自定义点击什么元素，图片切换,默认为 ".imgDot li"
+	});
+</script>
+</html>

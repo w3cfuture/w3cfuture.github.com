@@ -1,0 +1,122 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no">
+<title>转盘</title>
+<style>
+html,body,div,a,img,span,p,ul,li,h1,h2,h3,h4,h5,h6,table{margin:0px;padding:0px;list-style-type:none;text-decoration:none;}
+#r_box{
+	position:relative;
+	width:300px;
+	height:300px;
+	}
+#r_bnt{
+	width:100px;
+	height:100px;
+	border-radius:50%;
+	background:#fff;
+	position:absolute;
+	top:100px;
+	left:85px;
+	z-index:9999;
+	line-height:100px;
+	text-align:center;
+	color:#000;
+	font-size:18px;
+	font-family:"微软雅黑";
+	cursor:pointer;
+	}
+#r_canvas{
+	background:#ccc;
+	}
+</style>
+</head>
+
+<body>
+<div id="r_box">
+	<div id="r_bnt">请点击开始</div>
+	<canvas id="r_canvas" height="300" width="300"></canvas>  
+</div>
+</body>
+<script src="../../../js/jf.js"></script>
+<script src="../../../js/canvas.js"></script>
+<script src="../../../js/animate.js"></script>
+<script type="text/javascript">
+	var colorArr=["#ff0000","#00ffff","#f0cc00","#ff00ff","#0000ff","#00f00f","#f000ff","#0ff0ff"];
+	var textArr=["特等奖","谢谢惠顾","一等奖","谢谢惠顾","二等奖","三等奖","谢谢惠顾","谢谢惠顾"];
+	var num=textArr.length;
+	var cobj=f("#r_canvas");
+	cobj.getContext2D();
+	cobj.save();
+	cobj.translate(135,150);
+	//绘制扇形+添加文字
+	for(var i=0;i<num;i++){
+		cobj.line([[0,0]]);
+		cobj.arc([0,0,130,i*(360/num),(i+1)*(360/num),false],{type:"fill",color:{color:colorArr[i]},beginPath:false});
+		cobj.save();
+		cobj.rotate(i*(360/num)+180/num);
+		cobj.text([textArr[i],60,0,70],{type:'fill',color:{color:'#fff'},prop:{textAlign:'start',font:'normal normal 16px 微软雅黑',textBaseline:'middle'}});
+		cobj.restore();
+		
+	}
+	cobj.restore();
+	
+	//离线画布
+	var imgData=cobj.getImage();
+	var canvas=f.createC(300,300);
+	f(canvas).putImage(imgData,0,0);
+	//绘制箭头
+	cobj.line([[270,150],[278,144],[278,147],[295,147],[295,153],[278,153],[278,156]],{type:'fill',prop:"{lineWidth:1}"});
+	var aBealoon=true;
+	
+	//缓出
+	function easeOut(percentC,strength){
+		return 1-Math.pow(1-percentC,strength*2);
+	}
+	function animate(angle,allTime){
+		var time=0;
+		var v=angle/allTime;
+		var s1=new StopWatch({
+			fn:function(t,ftp){
+				time+=t;
+				sec=allTime*easeOut(time/allTime,2);
+				if(time>=allTime){
+					sec=allTime;
+					this.stop();
+					var num=8-Math.ceil(angle%360/45);
+					
+					f("#r_bnt")[0].innerHTML=textArr[num];
+					isWinFn(textArr[num]);
+					
+					aBealoon=true;
+				}
+				cobj.clearRect();
+				cobj.save();
+				cobj.translate(135,150);
+				cobj.rotate(sec*v);
+				cobj.draw(canvas,-135,-150);
+				cobj.restore();
+				//绘制箭头
+				cobj.line([[270,150],[278,144],[278,147],[295,147],[295,153],[278,153],[278,156]],{type:'fill',prop:"{lineWidth:1}"});
+			}	
+		});
+	}
+	
+	f("#r_bnt")[0].addEventListener("click",function(){
+		if(aBealoon){
+			aBealoon=false;
+			this.innerHTML="抽奖中..";
+			var angle=1440+360*Math.random();
+			animate(angle,5000);
+		}
+	},false);
+	
+	function isWinFn(text){
+		alert(text);
+	}
+</script>
+</html>

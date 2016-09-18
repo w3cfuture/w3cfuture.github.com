@@ -1,0 +1,91 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>滑动文档</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no">
+</head>
+<body>
+	<div id="div" style="background:#ccc;width:150px;height:150px;"></div>
+</body>
+<script src="../../../js/jf.js"></script>
+<script src="../../../js/css3.js"></script>
+<script src="../../../js/move.js"></script>
+<script>
+	//touchstart(mousedown)和鼠标滚动事件是绑定在当前元素上的，其余事件都是绑定在document上面的
+	f("#div").move({
+		zoom:false,  //是否允许放大，默认为否（false）
+		//参数
+		zoomNum:1, //当前scale倍数,必须和初始样式设置的保持一致
+		minZoom:1, //最小scale倍数
+		maxZoom:5, //最大scale倍数
+		useCapture:true,  //所有事件捕获还是冒泡，默认为捕获（true）
+		onRefresh:function(){ //初始化时执行和this.refresh()时执行
+		
+		},
+		startFn:function(obj){  //开始滑动时触发此函数
+			//obj.events表示事件的状态（event）；
+			//obj.pageX、obj.pageY表示离页面左边和上边的位置；
+			//obj.time当前时间；
+			//obj.zoomNum当前放大倍数；
+			//obj.translateX、obj.translateY当前位移（transform:translate）位置。
+		},
+		moveFn:function(obj,isScrolling){  //滑动过程中触发此函数
+			//obj.events表示事件的状态（event）；
+			//obj.x、obj.y表示离开始点滑动的距离；
+			//obj.scale当前dom元素上是否有多个触摸点，true为是，false为否；
+			//obj.zoomNum当前放大倍数；
+			//obj.translateX、obj.translateY当前位移（transform:translate）位置；
+			//obj.startPointX、obj.startPointY表示开始滑动时坐标位置；
+			//obj.deltaX、obj.deltaY表示离上一次滑动的距离；
+			//isScrolling等于0表示横向，1表示纵向。
+		},
+		zoomFn:function(obj){  //滑动过程中触发此函数
+			//obj.events表示事件的状态（event）；
+			//obj.x、obj.y表示当前应该位移（transform:translate）的位置；
+			//obj.zoomNum 表示当前应该放大倍数；
+		},
+		wheel:function(obj){  //pc鼠标滚轮
+			//obj.events表示事件的状态（event）；
+			//obj.x、obj.y表示当前应该位移（transform:translate）的位置；
+			//obj.zoomNum 表示当前应该放大倍数；
+		},
+		endFn:function(obj,isScrolling){  //结束滑动时触发此函数；
+			//obj.events表示事件的状态（event）；
+			//obj.x、obj.y表示离开始点滑动的距离；
+			//obj.scale当前dom元素上是否有多个触摸点，true为是，false为否；
+			//obj.zoomNum当前放大倍数；
+			//obj.translateX、obj.translateY当前位移（transform:translate）位置；
+			//obj.startPointX、obj.startPointY表示开始滑动时坐标位置；
+			//obj.duration表示手指在屏幕上停留的时间
+			//isScrolling等于0表示横向，1表示纵向。
+		}
+	});
+	
+	//this.refresh();  //执行onRefresh里面的函数
+	
+	//scrollTo(x, y, [time, [easing]]);
+		/*设置元素位移的位置（transform:translate）
+		x、y位移位置；
+		time定义过渡效果花费的时间（ms），默认为0；
+		easing规定过渡效果的时间曲线，默认为cubic-bezier(0.1, 0.57, 0.1, 1)；
+		如：f(".div").scrollTo(20,50,"600");*/
+		
+	//f.momentum(current, start, time, lowerMargin, wrapperSize); 
+		/*current：当前X/Y轴位移(translate)大小
+		start：开始滑动时X/Y轴位移(translate)大小
+		time： 开始滑动时到手指离开时候经历的时间
+		lowerMargin：X/Y轴可位移(translate)的最大距离，这个一般为滑动物体的宽度/高度 - 滑动物体父元素的宽度/高度）
+		wrapperSize：如果有边界距离的话就是可拖动，不然碰到0的时候便停止
+		返回值：
+		destination：位移大小
+		duration：位移时间
+		如：
+		var momentumX=f.momentum(0,400,100,2000,0)
+			newX = momentumX.destination;//位移大小
+			time = Math.max(momentumX.duration);//位移时间*/	
+</script>
+</html>

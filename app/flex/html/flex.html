@@ -1,0 +1,130 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no">
+<title>仿flex布局</title>
+<style>
+	html,body{width:100%;height:100%;}
+	html,body,div,a,img,span,p,ul,li,h1,h2,h3,h4,h5,h6,table{margin:0px;padding:0px; list-style-type:none;text-decoration:none; overflow:hidden;}
+	/*布局*/
+	/* 父元素-flex容器 */
+	.flex {
+		display: box;			  /* OLD - Android 4.4- */
+		display: -webkit-box;	  /* OLD - iOS 6-, Safari 3.1-6 */
+		display: -moz-box;		 /* OLD - Firefox 19- (buggy but mostly works) */
+		display: -ms-flexbox;	  /* TWEENER - IE 10 */
+		display: -webkit-flex;	 /* NEW - Chrome */
+		display: flex;			 /* NEW, Spec - Opera 12.1, Firefox 20+ */
+	}
+	/* 父元素-横向排列（主轴） */
+	.flex_h {
+		display: box;			  /* OLD - Android 4.4- */
+		display: -webkit-box;	  /* OLD - iOS 6-, Safari 3.1-6 */
+		display: -moz-box;		 /* OLD - Firefox 19- (buggy but mostly works) */
+		display: -ms-flexbox;	  /* TWEENER - IE 10 */
+		display: -webkit-flex;	 /* NEW - Chrome */
+		display: flex;			 /* NEW, Spec - Opera 12.1, Firefox 20+ */
+		/* 09版 */
+		-webkit-box-orient: horizontal;
+		/* 12版 */
+		-webkit-flex-direction: row;
+		-moz-flex-direction: row;
+		-ms-flex-direction: row;
+		-o-flex-direction: row;
+		flex-direction: row;
+	}
+	/* 父元素-纵向排列（主轴） */
+	.flex_v {
+		display: box;			  /* OLD - Android 4.4- */
+		display: -webkit-box;	  /* OLD - iOS 6-, Safari 3.1-6 */
+		display: -moz-box;		 /* OLD - Firefox 19- (buggy but mostly works) */
+		display: -ms-flexbox;	  /* TWEENER - IE 10 */
+		display: -webkit-flex;	 /* NEW - Chrome */
+		display: flex;			 /* NEW, Spec - Opera 12.1, Firefox 20+ */
+		/* 09版 */
+		-webkit-box-orient: vertical;
+		/* 12版 */
+		-webkit-flex-direction: column;
+		-moz-flex-direction: column;
+		-ms-flex-direction: column;
+		-o-flex-direction: column;
+		flex-direction: column;
+	}
+	/* 子元素-比例 */
+	.flex1 {
+		-webkit-box-flex: 1;	  /* OLD - iOS 6-, Safari 3.1-6 */
+		-moz-box-flex: 1;		 /* OLD - Firefox 19- */
+		width: 20%;			   /* For old syntax, otherwise collapses. */
+		-webkit-flex: 1;		  /* Chrome */
+		-ms-flex: 1;			  /* IE 10 */
+		flex: 1;				  /* NEW, Spec - Opera 12.1, Firefox 20+ */
+	}
+	.flex2 {
+		-webkit-box-flex: 2;	  /* OLD - iOS 6-, Safari 3.1-6 */
+		-moz-box-flex: 2;		 /* OLD - Firefox 19- */
+		width: 40%;			   /* For old syntax, otherwise collapses. */
+		-webkit-flex: 2;		  /* Chrome */
+		-ms-flex: 2;			  /* IE 10 */
+		flex: 2;				  /* NEW, Spec - Opera 12.1, Firefox 20+ */
+	}
+	
+	
+	.div{
+		height:100%;
+	}
+	.ul{
+		width:100%;
+	}
+	.ul li{
+		border:1px solid #ccc;
+		text-align:center;
+	}
+</style>
+</head>
+
+<body>
+<div class="flex_v div">
+	<ul class="flex ul flex1" ie-flex="1">
+    	<li class="flex1" ie-flex="1">11</li>
+        <li class="flex1" ie-flex="1">22</li>
+        <li class="flex1" ie-flex="1">33</li>
+        <li class="flex1" ie-flex="1">44</li>
+    </ul>
+    <ul class="flex ul flex1" ie-flex="1">
+    	<li class="flex1" ie-flex="1">11</li>
+        <li style="width:100px;">22</li>
+        <li class="flex1" ie-flex="1">33</li>
+        <li class="flex1" ie-flex="1">44</li>
+    </ul>
+    <ul class="flex ul" style="height:100px;">
+    	<li class="flex1" ie-flex="1">11</li>
+        <li class="flex1" ie-flex="1">22</li>
+        <li class="flex1" ie-flex="1">33</li>
+        <li class="flex1" ie-flex="1">44</li>
+    </ul>
+</div>
+</body>
+<script type="text/javascript" src="../../../js/jquery.js"></script>
+<script type="text/javascript" src="../js/flex.js"></script> <!--暂时只支持上面css中有的几种布局属性-->
+<script>
+	if(getBrowserInfo().agent=="ie" && getBrowserInfo().version<10){ //ie10 以下执行
+		$(".ul li").height("100%"); //根据实际的项目来设置
+		
+		$(function(){
+			$(".flex,.flex_h").flexBoxX({first:true});   
+			$(".flex_v").flexBoxY({first:true});
+			
+			$(window).resize(function(){
+				$(".flex,.flex_h").flexBoxX();
+				$(".flex_v").flexBoxY();
+			});
+		})
+	
+		
+	}
+</script>
+</html>

@@ -1,0 +1,58 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>分页组件</title>
+<style>
+html {font-size: 12px;}
+html, body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, form, fieldset, input, textarea, p, th, td, img, label, button, span, a ,i,em,b,strong{ margin: 0; padding: 0; word-break:break-all;font-family: Microsoft YaHei, "微软雅黑";}
+h1, h2, h3, h4, h5, h6 { font-weight: normal;}
+i,em,b,strong{ font-style:normal;}
+a { text-decoration: none; color: inherit; }
+/****************
+	分页
+******************/
+.c_page { text-align: right; padding: 15px; }
+.pagePlug{display: inline-block;}
+.pagePlug .page_num { display: inline-block; zoom: 1; *display:inline;
+}
+.pagePlug span { padding: 0px 10px; height: 28px; border-radius: 3px; margin-left: 6px; background: #fff; border: 1px solid #e9e9e9; color: #a7a7a7; display: inline-block; zoom: 1; *display:inline;
+font-size: 12px; text-align: center; line-height: 28px; }
+.pagePlug span:hover { background: #f1f1f1; cursor:pointer;}
+.pagePlug .page_active { color: #fff; background: #5fa8f4; }
+.pagePlug .page_active:hover { background: #5fa8f4; }
+.pagePlug .page_gray { display: none; }
+.pageHint { display:inline-block; font-size: 12px; color: #a7a7a7; line-height: 28px; margin-left: 10px; }
+</style>
+</head>
+
+<body>
+<!--分页-->
+<div class="c_page" id="page1">
+    
+</div>
+</body>
+<script type="text/javascript" src="../../../js/jquery.js"></script>
+<script type="text/javascript" src="../js/pageInit.js"></script>
+<script>
+/*******分页******/
+	var page=new PageInit("#page1",{
+		num:5,
+		page:1,
+		allNums:41,
+		isInitLoad:true,  //初始化是否加载，可以为空，默认为是
+		thisPageFn:function(num){
+			console.log(num);
+		}
+	});
+	/*page.pageRefresh({
+		num:5,
+		page:1,
+		allNums:41,
+		isInitLoad:true,  //初始化是否加载，可以为空，默认为是
+		thisPageFn:function(num){
+			console.log(num);
+		}
+	});*/
+</script>
+</html>

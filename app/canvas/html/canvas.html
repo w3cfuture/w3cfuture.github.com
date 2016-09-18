@@ -1,0 +1,114 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>canvas文档</title>
+<style>
+	*{padding:0px; margin:0px;}
+	img{position:absolute;}
+	body{margin:0px auto;width:1200px;}
+</style>
+</head>
+
+<body>
+	<img src="../../../images/1.jpg" width="0">
+	<canvas class="canvas" height="3500" width="1200" style="background:#ccc;"></canvas> 
+</body>
+<script src="../../../js/jf.js"></script>
+<script src="../../../js/canvas.js"></script>
+<script>
+	window.onload=function(){
+		//初始化
+		f('.canvas').getContext2D();
+		/***************
+			画图
+		**************/
+		f('.canvas').text(["一、画图",20,20],{prop:{font:"30px Arial",textBaseline:"top"}});
+		
+		//矩形
+		f('.canvas').text(["1.矩形",80,70],{prop:{font:"25px Arial",textBaseline:"top"}});
+		/*****一个矩形start*****/
+		f('.canvas').save(); //保存当前环境的状态
+		f('.canvas').prop({lineWidth:10,lineJoin:"round"}); //canvas的2d环境本有属性
+		f('.canvas').color({color:'#ff0',strokeStyle:"#00f"}); //颜色
+		/*
+		color为颜色，格式如：color:'#ff0'；
+		strokeStyle为设置用于笔触的颜色、渐变或模式，可以重定义如：strokeStyle:'#ff0'；
+		fillStyle为设置用于填充绘画的颜色、渐变或模式，可以重定义如：fillStyle:'#ff0'；
+		radial为环形渐变，格式如：radial:[700,200,10,700,200,50]；
+		linear为线性渐变，格式如：linear:[650,10,750,10]；
+		addColor为渐变的颜色，格式如：addColor:{0:"#f00",0.5:"blue",1:"#fff"}；
+		pattern为图片填充：ele可以为元素的id||class||tagname，也可以为元素本身，格式如：pattern:["img","repeat"]。
+		*/
+		f('.canvas').shadow([5,5,10,"#f0f"]); //阴影，[水平距离,垂直距离,模糊级别,颜色]
+		//f('.canvas').cobj()当前2d环境
+		f('.canvas').cobj().beginPath(); //起始一条路径，或重置当前路径
+		f('.canvas').cobj().rect(60,130,100,100); //矩形
+		f('.canvas').cobj().closePath(); //创建从当前点回到起始点的路径
+		f('.canvas').type("fill,stroke"); //fill为填充，stroke为描边，默认为fill
+		f('.canvas').restore(); //返回之前保存过的路径状态和属性
+		/*****一个矩形end*****/
+		f('.canvas').text(["相当于",180,180],{prop:{font:"25px Arial",textBaseline:"middle"}});
+		f('.canvas').rect([270,130,100,100],{prop:{lineWidth:10,lineJoin:"round"},type:"fill,stroke",color:{color:'#ff0',strokeStyle:"#00f"},shadow:[5,5,10,"#f0f"]});
+		
+		f('.canvas').rect([60,270,100,100],{prop:{lineWidth:10},type:"fill,stroke",color:{color:'#ff0',fillStyle:"#00f"}});
+		f('.canvas').rect([210,270,100,100],{prop:{lineWidth:10},type:"fill,stroke",color:{linear:[210,270,310,270],addColor:{0:"#f00",0.5:"blue",1:"#fff"},fillStyle:"#00f"}});
+		f('.canvas').rect([360,270,100,100],{prop:{lineWidth:10},type:"fill,stroke",color:{radial:[410,320,10,410,320,50],addColor:{0:"#f00",0.5:"blue",1:"#fff"},strokeStyle:"#00f"}});
+		
+		f('.canvas').save();
+		f('.canvas').translate(510,260);
+		f('.canvas').rect([10,10,100,100],{prop:{lineWidth:20},type:"fill,stroke",color:{pattern:["img","repeat"],fillStyle:"#00f"}});
+		f('.canvas').restore();
+		//圆
+		f('.canvas').text(["2.圆",80,450],{prop:{font:"25px Arial",textBaseline:"top"}});
+		f('.canvas').arc([110,550,50,0,360],{color:{color:'#ff0'}});
+		//线
+		f('.canvas').text(["3.线",80,650],{prop:{font:"25px Arial",textBaseline:"top"}});
+		f('.canvas').line([[60,730],[150,730]],{color:{strokeStyle:'#f00'},closePath:false});
+		f('.canvas').line([[200,700],[200,750]],{color:{strokeStyle:'#ff0'},beginPath:false});
+		f('.canvas').line([[300,730],[300,800,400,730]],{color:{strokeStyle:'#ff0'},closePath:false});
+		f('.canvas').line([[500,730],[550,730,550,800,10],[550,800]],{color:{strokeStyle:'#ff0'},closePath:false});
+		f('.canvas').line([[600,700],[600,750,700,750,700,700]],{color:{strokeStyle:'#ff0'},closePath:false});
+		//星形
+		f('.canvas').text(["4.星形",80,800],{prop:{font:"25px Arial",textBaseline:"top"}});
+		f('.canvas').star([110,900,50,20,5],{color:{color:'#f00'}});
+		f('.canvas').star([300,900,50,20,6],{type:"stroke",color:{color:'#f0f'}});
+		//多边形
+		f('.canvas').text(["5.多边形",80,1000],{prop:{font:"25px Arial",textBaseline:"top"}});
+		f('.canvas').poly([110,1100,50,6],{color:{color:'#f0f'}});
+		f('.canvas').poly([300,1100,50,3],{type:"stroke",color:{color:'#ff0'}});
+		
+		
+		/***************
+			图像
+		**************/
+		f('.canvas').text(["二、图像",20,1200],{prop:{font:"30px Arial",textBaseline:"top"}});
+		f('.canvas').text(["1.原图",80,1250],{prop:{font:"25px Arial",textBaseline:"top"}});
+		f('.canvas').draw("img",80,1300);
+		
+		console.log(f('.canvas').createImage(20,20));
+		
+		f('.canvas').text(["2.像素操作",80,1580],{prop:{font:"25px Arial",textBaseline:"top"}});
+		
+		f('.canvas').text(["1).反相",100,1620],{prop:{font:"20px Arial",textBaseline:"top"}});
+		var imageData=f('.canvas').getImage(80,1300,580,240);
+		f('.canvas').putImage(f.opp(imageData),80,1660);
+		
+		f('.canvas').text(["2).窗帘",100,1920],{prop:{font:"20px Arial",textBaseline:"top"}});
+		var imageData=f('.canvas').getImage(80,1300,580,240);
+		f('.canvas').putImage(f.blind(imageData,20),80,1960);
+		
+		f('.canvas').text(["3).杂色",100,2220],{prop:{font:"20px Arial",textBaseline:"top"}});
+		var imageData=f('.canvas').getImage(80,1400,50,50); //计算量太大，只截取一部分演示
+		f('.canvas').putImage(f.rand(imageData,0.2),200,2300);
+		
+		f('.canvas').text(["4).模糊",100,2520],{prop:{font:"20px Arial",textBaseline:"top"}});
+		var imageData=f('.canvas').getImage(80,1300,580,240);
+		f('.canvas').putImage(f.fblur(imageData,2),80,2560);
+		
+		f('.canvas').text(["4).倒影",100,2820],{prop:{font:"20px Arial",textBaseline:"top"}});
+		var imageData=f('.canvas').getImage(80,1300,580,240);
+		f('.canvas').putImage(f.ref(imageData,1),80,2860);
+	}
+</script>
+</html>

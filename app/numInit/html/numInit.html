@@ -1,0 +1,91 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>数值控件</title>
+<style>
+body{
+	text-align:center;
+	}
+html, body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, form, fieldset, input, textarea, p, th, td, img, label, button, span, a, i, em, b, strong {
+    word-break: break-all;
+    font-family: Microsoft YaHei, "微软雅黑";
+}
+input, button, select, textarea {
+    outline: none;
+    border: none;
+    font-size: 12px;
+    font-family: Microsoft YaHei, "微软雅黑";
+}
+/****************
+	数量控件
+*****************/
+.c_num { display: inline-block; border: 1px solid #e1e1e1; height: 40px; background: #fff; border-radius:4px; overflow:hidden; margin-top:20px;}
+.c_num:after { content: ""; display: block; height: 0; clear: both; visibility: hidden; }
+.c_num .text { width: 232px; height: 100%; padding: 0px 8px; text-align: center; display: inline-block; line-height: 40px; color:#333; font-size:14px; background:#fbfbfb; border-left:1px solid #e1e1e1; border-right:1px solid #e1e1e1;float:left; box-sizing:border-box;}
+.c_num .dec, .c_num .add{
+	width:36px;
+	height:100%;
+	float:left;
+	background:#fff;
+	cursor:pointer;
+	}
+.c_num .dec.disabled,.c_num .add.disabled{
+	cursor:default;
+	}
+.c_num .dec i{
+	display:inline-block;
+	border-top: 5px solid transparent; 
+	border-bottom: 5px solid transparent; 
+	border-right: 8px solid #aaa;
+	}
+.c_num .add i{
+	display:inline-block;
+	border-top: 5px solid transparent; 
+	border-bottom: 5px solid transparent; 
+	border-left: 8px solid #aaa;
+	}
+
+.c_num .dec.disabled i{
+	border-right-color:#ddd;
+	}
+.c_num .add.disabled i{
+	border-left-color:#ddd;
+	}
+</style>
+<script type="text/javascript" src="../../../js/jquery.js"></script>
+<script type="text/javascript" src="../js/numInit.js"></script>
+</head>
+
+<body>
+	<div class="c_num regNum">
+		<button class="dec" disabled><i></i></button>
+		<input type="hidden" class="num" value="1" />
+		<span class="text">10</span>
+		<button class="add"><i></i></button>
+	</div><br/>
+	<div class="c_num spaceSize">
+		<button class="dec" disabled><i></i></button>
+		<input type="hidden" class="num" value="5"/>
+		<span class="text">5G</span>
+		<button class="add"><i></i></button>
+	</div>
+</body>
+<script>
+	/*数值控件*/
+	$(".regNum").numInit({
+		minN:0,
+		maxN:999999,
+		callBack:function(num){
+			$(this).find(".text").text(num*10);
+		}
+	});
+	$(".spaceSize").numInit({
+		minN:0,
+		maxN:10,
+		callBack:function(num){
+			$(this).find(".text").text(num+"G");
+		}
+	});
+</script>
+</html>

@@ -1,0 +1,287 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>图片放大查看</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no">
+<style type="text/css">
+/*Reset*/
+body,div,h1,h2,h3,h4,h5,h6,hr,p,blockquote,dl,dt,dd,ul,ol,li,pre,form,fieldset,legend,button,input,textarea,th,td{margin:0;padding:0;border:0;}
+article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block;}
+body{font:62.5%/1.5 微软雅黑, Arial, sans-serif; -webkit-text-size-adjust:none; -webkit-user-select:none;}
+ul,ol{list-style:none;}
+a{text-decoration:none;}
+a:hover{text-decoration:none;}
+q:before,q:after{content:''}
+fieldset,img{border:0;}
+/*清除浮动*/
+.cf:after{
+	content:"";
+	height:0px;
+	display:block;
+	clear:both;
+	visibility:hidden;
+}
+</style>
+<style type="text/css">
+	.c_slide_img li{
+		width:50%;
+		float:left;
+		}
+	.c_slide_img img{
+		width:100%;
+		height:100%;
+	}
+	
+	.div{
+		margin-top:50px;
+		
+		}
+	.div img{
+		width:33.33%;
+		float:left;
+		}
+	
+	
+	/********************
+      弹出提示框
+	**********************/
+	.popup_box_box { position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 10000; }
+	.popup_box_bg { height:100%;width:100%; background:rgba(0,0,0,0.5);}
+	/****************
+		放大图片
+	*****************/
+	/*图片展示样式*/
+	.c_zoomPictrue{
+		position:absolute;
+		top:0px;
+		left:0px;
+		right:0px;
+		bottom:0px;
+		width:100%;
+		height:100%;
+		overflow:hidden;
+		}
+	
+	.c_zoomPictrue .imgBox{
+		width:100%;
+		height:100%;
+		overflow:hidden;
+		}
+	.c_zoomPictrue .imgs{
+		width:100%;
+		height:100%;
+		/*Chrome渲染Transition时页面闪动Bug*/
+		-webkit-transform-style:preserve-3d;
+		}
+	.c_zoomPictrue .imgs .li{
+		float:left;
+		width:100%;
+		height:100%;
+		position:relative;
+		}
+	.c_zoomPictrue .imgs img{
+		max-width:100%;
+		max-height:100%;
+		width:auto;
+		height:auto;
+		position:absolute;
+		top:0px;
+		left:0px;
+		right:0px;
+		bottom:0px;
+		margin:auto;
+		}
+	.c_zoomPictrue .imgDot{
+		position:absolute;
+		bottom:10px;
+		width:100%;
+		text-align:center;
+		}
+	.c_zoomPictrue .imgDot li{
+		display:inline-block;
+		width:6px;
+		height:6px;
+		border-radius:50%;
+		border:1px solid #fff;
+		margin-right:4px;
+		}
+	.c_zoomPictrue .imgDot li.selected{
+		background:#fff;
+		}
+</style>
+
+</head>
+<body>
+	<ul class="c_slide_img cf">
+		<li><img src="../../../images/1.jpg"/></li>
+		<li><img src="../../../images/2.jpg"/></li>
+		<li><img src="../../../images/3.jpg"/></li>
+		<li><img src="../../../images/4.jpg"/></li>
+	</ul>
+	<div class="div cf">
+		<img src="../../../images/1.jpg"/>
+		<img src="../../../images/2.jpg"/>
+		<img src="../../../images/3.jpg"/>
+	</div>
+<script src="../../../js/jf.js"></script>
+<script src="../../../js/css3.js"></script>
+<script src="../../../js/move.js"></script>
+<script src="../js/img_slide.js"></script>
+<script src="../../popupDialog/js/popupDialog_m.js"></script>
+<script>
+	//阻止PC端默认事件
+	document.addEventListener("mousemove",function(e){e.preventDefault();},false);
+	
+	function preventDefault(e){
+		e.preventDefault();
+	}
+	
+	jf.fn.extend({
+		//图片切换-无动画(放大)
+		zoomPictrue:function(popupObj){
+			f(this).each(function (){
+				var _that=this;
+				var original = _that.getAttribute("data-original");
+				var src=_that.src;
+				
+				if(original==src){
+					imgZoom(_that);
+				}else{
+					var img=new Image();
+					img.src=original;
+					img.onload=function(){
+						_that.src=original;
+						imgZoom(_that);
+					}
+				}
+				
+				//图片放大
+				function imgZoom(ele){
+					f(ele).move({
+						useCapture:true,
+						zoom:true,
+						onRefresh:function(){
+							f(this.ele).css('transform',"translate(0px,0px) translateZ(0px)");
+							f(this.ele).css('transformOrigin',"0px 0px");
+						},
+						startFn:function(obj){
+							f(this.ele).css('transition',"all 0s");
+						},
+						moveFn:function(obj,isScrolling){
+							obj.events.preventDefault();
+							if(obj.scale) return;  //多个触摸点的时候禁止滑动
+							if(obj.zoomNum!=1){
+								obj.events.stopPropagation();
+								var newY=obj.translateY+obj.deltaY;
+								var newX=obj.translateX+obj.deltaX;
+								f(this.ele).css('transform',"translate("+newX+"px,"+newY+"px) scale("+obj.zoomNum+") translateZ(0px)");
+							}
+						},
+						zoomFn:function(obj){
+							if((-f(popupObj.querySelector(".imgs")).transform().x)%popupObj.querySelector(".li").offsetWidth!=0){
+								this.options.zoomNum=1;
+								return;
+							}
+							obj.events.preventDefault();
+							f(this.ele).css('transition',"all 0s");
+							f(this.ele).css('transform',"translate("+obj.x+"px,"+obj.y+"px) scale("+obj.zoomNum+") translateZ(0px)");
+							if(obj.zoomNum==1){
+								f(this.ele).css('transform',"translate(0px,0px) translateZ(0px)");
+							}
+						}
+					});
+				}
+			});
+		},
+		//添加图片放大事件
+		addZoomPictrue:function(options){
+			//判断是pc端还是移动端
+			var isTouchPad = (/hp-tablet/gi).test(navigator.appVersion),
+				hasTouch = 'ontouchstart' in window && !isTouchPad,
+				MOVE_EV = hasTouch ? 'touchmove' : 'mousemove',
+				CLICK_EV = hasTouch ? 'touchend' : 'click';
+			var that=this;
+			var settings = {
+				data_attribute:'data-original'
+			}
+			for(i in options){
+				settings[i]=options[i];
+			}
+			that.each(function(i){
+				var index=i;
+				this.addEventListener("click",function(){
+					//阻止UC浏览器放大事件
+					document.addEventListener("touchstart",preventDefault,false);
+					var liContent="";
+					that.each(function(){
+						var original=this.getAttribute(settings.data_attribute) || this.src;
+						liContent+='<li class="li"><img data-original="'+original+'" src="'+this.src+'"></li>';
+					});
+					new PopupDialogBox({
+						/*内容*/
+						"html":'<div class="c_zoomPictrue">' <!--可修改-->
+									+'<div class="imgBox">'
+										+'<ul class="imgs cf">'+liContent+'</ul>'
+									+'</div>'
+									+'<ul class="imgDot">'
+									+'</ul>'
+								+'</div>',
+						
+						/*关闭时调用*/
+						"closeFn":function(){
+							//f(document).unbind("touchmove",preventDefault);
+						},
+						
+						/*初始化时调用*/
+						"initFn":function(){
+							var that=this;
+							f(that.popupObj).imgChange({
+								autoplay:false,  //是否自动播放,默认为 是
+								//animate:false,  //图片切换是否有动画,默认为 有
+								index:index,  //初始化显示第几张,默认为 0
+								//time:5000,  //自动播放时间间隔,默认为 5000
+								//indexLi:".ul li",  //图片切换滑动时，自定义对应的元素上添加selected,默认为 ".imgDot li"
+								resize:true, //窗口变化的时候是否要重新计算此组件,默认为 否
+								useCapture:false //滑动事件是冒泡还是捕获
+								
+							});
+							
+							f(that.popupObj.querySelectorAll(".li")).each(function(){	
+								this.addEventListener(CLICK_EV,function(e){   //这里的关闭事件，PC端可以改成一个按钮
+									if(e.target.tagName.toUpperCase()=="LI"){
+										that.close();
+										document.removeEventListener("touchstart",preventDefault,false);
+									}
+								},false);
+								
+								this.addEventListener(MOVE_EV,function(event){
+									if(f(this.querySelector("img")).transform().sx!=1){
+										event.stopPropagation();
+										event.preventDefault();
+									}
+								},false);
+							});
+							
+							f(that.popupObj.querySelectorAll("img")).zoomPictrue(that.popupObj);
+						}
+					})
+				},false);
+			});
+		}
+	});
+</script>
+<script>
+	//详情图片点击放大
+	f(".c_slide_img img").addZoomPictrue({
+		//data_attribute:'data-original',   //默认原始图片，如：<img data-original="3.jpg" src="loading.gif"/>
+	});
+	f(".div img").addZoomPictrue({
+		//data_attribute:'data-original',   //默认原始图片
+	});
+</script>
+</body>
+</html>

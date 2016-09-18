@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <title>星星</title>
+<style>
+	*{padding:0px; margin:0px;}
+	body{overflow:hidden;}
+</style>
+</head>
+<body>
+<canvas style="background:#000;"></canvas>
+</body>
+<script src="../../../js/jf.js"></script>
+<script src="../../../js/canvas.js"></script>
+<script src="../../../js/animate.js"></script>
+<script type="text/javascript">
+    var cobj= f("canvas");
+    cobj.getContext2D();
+	var w=window.innerWidth;
+    var h=window.innerHeight;
+	cobj[0].width=w;
+	cobj[0].height=h;
+    var starArrs=[];
+    for(var i=0;i<60;i++){
+        var starArr=[];
+        starArr.r1=15+Math.random()*10;
+        starArr.r2=0+Math.random()*5;
+        starArr.x=starArr.r1+Math.random()*(w-2*starArr.r1);
+        starArr.y=starArr.r1+Math.random()*(h-2*starArr.r1);
+        starArr.num=8+parseInt(Math.random()*4);
+        starArr.speed=2*Math.random();
+        starArr.a=0;
+        starArr.color="rgb("+parseInt(Math.random()*255)+","+parseInt(Math.random()*255)+","+parseInt(Math.random()*255)+")";
+        starArrs.push(starArr);
+    }
+    for(var i=0;i<starArrs.length;i++){
+        cobj.save();
+        cobj.translate(starArrs[i].x,starArrs[i].y);
+        cobj.star([0,0,starArrs[i].r1,starArrs[i].r2,starArrs[i].num],{color:{color:starArrs[i].color}});
+        cobj.restore();
+    }
+	//var sum=0;
+	new StopWatch({
+		fn:function(time,ftp){
+			cobj.clearRect();
+			/*for(var i=0;i<50000000;i++){  //测试双缓存
+				sum+=i;
+			}*/
+			for(var i=0;i<starArrs.length;i++){
+				cobj.save();
+				cobj.translate(starArrs[i].x,starArrs[i].y);
+				cobj.scale(Math.cos(starArrs[i].a*Math.PI/180),Math.cos(starArrs[i].a*Math.PI/180));
+				cobj.opacity(Math.cos(starArrs[i].a*Math.PI/180));
+				cobj.rotate(starArrs[i].a);
+				cobj.star([0,0,starArrs[i].r1,starArrs[i].r2,starArrs[i].num],{color:{color:starArrs[i].color},shadow:[0,0,5,'#f1f1f1']});
+				starArrs[i].a+=starArrs[i].speed;
+				cobj.restore();
+	
+			}
+		}
+	});
+</script>
+</html>

@@ -1,0 +1,88 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>图片放大</title>
+<!--<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">-->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no">
+<style type="text/css">
+/*去除默认样式*/
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, fieldset, input,select, textarea, p, blockquote, th, td, a, i, em, b, strong, header, footer, aside, section, nav, hgroup, article { margin: 0; padding: 0; -webkit-appearance: none; /*去除系统默认的样式*/ -webkit-tap-highlight-color: rgba(0, 0, 0, 0);   /* 点击高亮的颜色*/}
+</style>
+<style type="text/css">
+/*图片展示样式*/
+html,body{width:100%;}
+.popup_box_box { position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 10000; }
+.popup_box_bg { height:100%;width:100%; background:rgba(0,0,0,0.5);}
+.img{
+	max-width:100%;
+	max-height:100%;
+	position:absolute;
+	top:0px;
+	left:0px;
+	right:0px;
+	bottom:0px;
+	margin:auto;
+	background: #fff;
+	}
+</style>
+
+</head>
+<body>
+	<div class="popup_box_box ">
+		<div class="popup_box_bg"></div>
+		<img src="../../../images/1.jpg" class="img"/>
+	</div>
+</body>
+<script src="../../../js/jf.js"></script>
+<script src="../../../js/css3.js"></script>
+<script src="../../../js/move.js"></script>
+<script>
+	jf.fn.extend({
+		//纵向滑动
+		zoom:function(){
+			f(this).move({
+				useCapture:false,
+				zoom:true,
+				minZoom:0.5,
+				maxZoom:5,
+				onRefresh:function(){
+					f(this.ele).css('transform',"translate(0px,0px) translateZ(0px)");
+					f(this.ele).css('transformOrigin',"0px 0px");
+				},
+				startFn:function(obj){
+					f(this.ele).css('transition',"all 0s");
+				},
+				moveFn:function(obj,isScrolling){
+					obj.events.preventDefault();
+					if(obj.scale) return;  //多个触摸点的时候禁止滑动
+					obj.events.stopPropagation();
+					var newY=obj.translateY+obj.deltaY;
+					var newX=obj.translateX+obj.deltaX;
+					f(this.ele).css('transform',"translate("+newX+"px,"+newY+"px) scale("+obj.zoomNum+") translateZ(0px)");
+					
+				},
+				zoomFn:function(obj){
+					obj.events.preventDefault();
+					f(".img").css('transition',"all 0s");
+					f(".img").css('transform',"translate("+obj.x+"px,"+obj.y+"px) scale("+obj.zoomNum+") translateZ(0px)");
+				}
+			});
+		}
+	});
+	
+	//阻止PC端默认事件
+	document.addEventListener("mousemove",function(e){e.preventDefault();},false);
+	
+	//阻止UC浏览器放大事件
+	document.addEventListener("touchstart",function(e){e.preventDefault();},false);
+	
+	/****************
+		调用方式
+	****************/
+	f(".img").zoom();
+</script>
+</html>

@@ -1,0 +1,98 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>下拉框</title>
+<style>
+html {font-size: 12px;}
+html, body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, form, fieldset, input, textarea, p, th, td, img, label, button, span, a ,i,em,b,strong{ margin: 0; padding: 0; word-break:break-all;font-family: Microsoft YaHei, "微软雅黑";}
+body{margin:20px;text-align:center;}
+h1{color:#333;margin:30px auto 10px; font-weight:normal;}
+/********************
+	pc下拉框
+********************/
+.c_select { position: relative; height: 40px; width: 300px; vertical-align: middle; background: #fff; border: 1px solid #e1e1e1; display: inline-block; padding-right:36px; box-sizing:border-box; border-radius:4px;}
+.c_select.disabled { background: #ebebe4;color:#545454; }
+.c_select .select_text { height: 100%; line-height: 40px; padding: 0px 10px; box-sizing: border-box; overflow: hidden; background:#fbfbfb; border-right:1px solid #e1e1e1; text-align:center; color:#000; font-size:14px;}
+.c_select .select_text.placeH{color:#A9A9A9;}
+.c_select .select_icon { position: absolute; top: 50%; right: 12px; margin-top: -3px; border-top: 7px solid #aaa; border-left: 5px solid transparent; border-right: 5px solid transparent; }
+.c_select .select_content { position: absolute; top: 100%; left: 0px; right: 0px; background: #fff; box-sizing: border-box; border: 1px solid #D7D7D7; color: #6d6d6d; max-height: 200px; overflow: hidden; overflow-y: auto; display: none; z-index: 9999; }
+.c_select .select_content p { box-sizing: border-box; padding: 10px 46px 10px 10px; text-align:center;}
+.c_select .select_content p:hover, .c_select .select_content p.selected { cursor: pointer; color: #000; background-color: #DCDCDC; }
+/********************
+	web下拉框
+********************/
+.m_select { position: relative; height: 40px; width: 300px; vertical-align: middle; background: #fff; border: 1px solid #e1e1e1; display: inline-block; padding-right:36px; box-sizing:border-box; border-radius:4px;}
+.m_select.disabled { background: #ebebe4;color:#545454; }
+.m_select .select_text { height: 100%; line-height: 40px; padding: 0px 10px; box-sizing: border-box; overflow: hidden; background:#fbfbfb; border-right:1px solid #e1e1e1; text-align:center; color:#000; font-size:14px;}
+.m_select .select_icon { position: absolute; top: 50%; right: 12px; margin-top: -3px; border-top: 7px solid #aaa; border-left: 5px solid transparent; border-right: 5px solid transparent; }
+.m_select .select_content { 
+	position: absolute; 
+	top:0px; 
+	left: 0px;  
+	width:100%; 
+	height:100%;
+	z-index: 2; 
+	opacity:0;
+	}
+</style>
+</head>
+
+<body>
+<h1>PC端</h1>
+<!--PC下拉框-->
+<div class="c_select" options="callBack:selectFn">
+    <div class="select_text placeH" value="">请输入单位</div>
+    <div class="select_icon"></div>
+    <div class="select_content">
+        <p value="1">a</p>
+        <p value="2">b</p>
+        <p value="3">c</p>
+        <p value="4">d</p>
+        <p value="5">e</p>
+        <p value="6">f</p>
+        <p value="7">g</p>
+        <p value="8">h</p>
+        <p value="9">i</p>
+        <p value="10">j</p>
+        <p value="11">k</p>
+        <p value="12">l</p>
+    </div>
+</div>
+<h1>移动端</h1>
+<!--web下拉框-->
+<div class="m_select">
+    <div class="select_text">j</div>
+    <div class="select_icon"></div>
+	<select class="select_content">
+		<option>a</option>
+		<option>b</option>
+		<option>c</option>
+		<option>d</option>
+		<option>e</option>
+		<option>f</option>
+		<option>g</option>
+		<option>h</option>
+		<option>i</option>
+	</select>
+</div>
+</body>
+<script type="text/javascript" src="../../../js/jquery.js"></script>
+<script type="text/javascript" src="../js/selectInit.js"></script>
+<script>
+	
+/*******pc下拉框******/
+	//初始化下拉框
+	$(function(){
+		selectInit();
+	});
+
+	function selectFn(value,text){
+		console.log(value+" "+text);
+	}
+/*******web下拉框******/
+	$(".m_select .select_content").change(function(){
+		$(".m_select .select_text").html($(this).val());
+	});
+</script>
+</html>

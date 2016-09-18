@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>元素漂浮</title>
+<style>
+*{padding:0px;margin:0px;}
+body {
+	background-color: #eee;
+	font-size:12px;
+}
+.fDiv{
+	width:200px;
+	height:200px;
+	background:#02deb1;
+	position:fixed;
+	display:none;
+	}
+</style>
+</head>
+
+<body>
+<div class="fDiv"></div>
+</body>
+<script type="text/javascript" src="../../../js/jquery.js"></script>
+<script type="text/javascript" src="../js/floatObj.js"></script>
+<script>
+	var floatObj=new FloatObj(".fDiv");
+</script>
+</html>
