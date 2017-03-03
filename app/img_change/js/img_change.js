@@ -51,16 +51,22 @@ ImgChange.prototype.init=function(){
 /***样式***/
 ImgChange.prototype.styleFn=function(animate){
 	animate=(animate===false)?false:this.options.animate;
+	var that=this;
+	var allNum=that.options.count/2;
+	var nowIndex=that.options.index%allNum;
 	if(animate){
-		$(this.ele).find(".imgs").stop().animate({"left":-this.options.index*this.options.width},1000);
+		$(that.ele).find(".imgs").stop().animate({"left":-that.options.index*that.options.width},1000,function(){
+			if(typeof that.options.animatedFn==="function") that.options.animatedFn.call(that,nowIndex,allNum);
+		});
 	}else{
-		$(this.ele).find(".imgs").css("left",-this.options.index*this.options.width);
+		$(that.ele).find(".imgs").css("left",-that.options.index*that.options.width);	
 	}
-	
-	$(this.ele).find(".imgs .li").removeClass("selected");
-	$(this.ele).find(".imgs .li").eq(this.options.index).addClass("selected");
-	$(this.options.indexLi).removeClass("selected");
-	$(this.options.indexLi).eq(this.options.index%(this.options.count/2)).addClass("selected");
+
+	$(that.ele).find(".imgs .li").removeClass("selected");
+	$(that.ele).find(".imgs .li").eq(that.options.index).addClass("selected");
+	$(that.options.indexLi).removeClass("selected");
+	$(that.options.indexLi).eq(nowIndex).addClass("selected");
+	if(typeof that.options.fn==="function") that.options.fn.call(that,nowIndex,allNum);
 	
 }
 /***动画播放***/

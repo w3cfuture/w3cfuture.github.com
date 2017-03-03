@@ -56,18 +56,18 @@
 		//html转化成对象
 		buildFragment:function(html){
 			if(typeof html=="object") return html;
-			var oFragment = document.createDocumentFragment();
-			var nodes=[],div=document.createElement("div");
+			var fragment = document.createDocumentFragment(),
+	        	child,
+	        	nodes=[],
+	        	div=document.createElement("div");
 			div.innerHTML=html;
-			for(i in div.childNodes){  //储存数据
-				nodes[i]=div.childNodes[i];
-			}
-			for(var i=0,len=nodes.length;i<len;i++){
-				if(nodes[i].nodeType === 1){
-					oFragment.appendChild(nodes[i]);
-				}
-			}
-			return oFragment;
+			
+	        // 将原生节点拷贝到fragment
+	        while (child = div.firstChild) {
+	            fragment.appendChild(child);
+	        }
+	
+	        return fragment;
 		}
 	});
 })(window);

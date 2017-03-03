@@ -119,6 +119,12 @@ ul li { list-style-type: none; }
 		//time:3000,  //自动播放时间间隔,默认为 5000
 		//resize:false, //窗口变化的时候是否要重新计算此组件,默认为 否
 		//indexLi:".ul li"  //可以自定义点击什么元素，图片切换,默认为 ".imgDot li"
+		fn:function(index,all){
+			console.log(index+" "+all);
+		},
+		animatedFn:function(index,all){
+			console.log(index+" "+all);
+		}
 	});
 </script>
 </html>

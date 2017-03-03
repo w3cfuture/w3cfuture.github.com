@@ -13,6 +13,7 @@ jQuery.fn.extend({
 function Drag(ele,options){
 	this.ele=ele;
 	this.options={
+		boundary:true
 	};
 	for(var i in options){
 		this.options[i]=options[i];
@@ -72,8 +73,6 @@ Drag.prototype.start=function(event){
 		}
 	}
 	if(flag && this.options.startFn){
-		this.ele.style.position='absolute';
-		this.ele.style.margin='0';
 		this.options.startFn.call(this,event);
 	}
 	return flag;
@@ -81,26 +80,30 @@ Drag.prototype.start=function(event){
 
 //移动
 Drag.prototype.move=function(event){
+	this.ele.style.position='absolute';
+	this.ele.style.margin='0';
 	this.options.left = event.pageX - this.options.diffX;
 	this.options.top = event.pageY - this.options.diffY;
 	
-	var minX=(typeof this.options.minX==="undefined")?$(window).scrollLeft():this.options.minX;
-	var maxX=(typeof this.options.maxX==="undefined")?$(window).innerWidth()+$(window).scrollLeft():this.options.maxX;
-	var minY=(typeof this.options.minY==="undefined")?$(window).scrollTop():this.options.minY;
-	var maxY=(typeof this.options.maxY==="undefined")?$(window).innerHeight()+$(window).scrollTop():this.options.maxY;
+	if(this.options.boundary){
+		var minX=(typeof this.options.minX==="undefined")?$(window).scrollLeft():this.options.minX;
+		var maxX=(typeof this.options.maxX==="undefined")?$(window).innerWidth()+$(window).scrollLeft():this.options.maxX;
+		var minY=(typeof this.options.minY==="undefined")?$(window).scrollTop():this.options.minY;
+		var maxY=(typeof this.options.maxY==="undefined")?$(window).innerHeight()+$(window).scrollTop():this.options.maxY;
+		
+		if (this.options.left < minX) {
+			this.options.left = minX;
+		}else if(this.options.left > maxX-$(this.ele).outerWidth()) {
+			this.options.left = maxX-$(this.ele).outerWidth();
+		}
 	
-	if (this.options.left < minX) {
-		this.options.left = minX;
-	}else if(this.options.left > maxX-$(this.ele).outerWidth()) {
-		this.options.left = maxX-$(this.ele).outerWidth();
+		if (this.options.top < minY) {
+			this.options.top = minY;
+		}else if(this.options.top > maxY  - $(this.ele).outerHeight()) {
+			this.options.top = maxY  - $(this.ele).outerHeight();
+		}
 	}
 
-	if (this.options.top < minY) {
-		this.options.top = minY;
-	}else if(this.options.top > maxY  - $(this.ele).outerHeight()) {
-		this.options.top = maxY  - $(this.ele).outerHeight();
-	}
-	
 	this.ele.style.left = this.options.left + 'px';
 	this.ele.style.top = this.options.top + 'px';
 	

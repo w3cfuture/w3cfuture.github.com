@@ -99,10 +99,12 @@
 	$(".div").each(function(){
 		$(this).drag({
 			dragEle:$(this).find(".title")[0],
+			//boundary:true, //有没有边界限制
 			startFn:function(){
 			},
 			moveFn:function(){
 				var distance=1000000;
+				var minEle;
 				var that=this;
 				var offsetX=$(that.ele).offset().left;
 				var offsetY=$(that.ele).offset().top;
@@ -112,16 +114,20 @@
 					var y=$(this).offset().top-offsetY;
 					var diff=Math.sqrt(x*x+y*y);
 					if(diff<distance){
-						$(this).before(dotted);
+						minEle=this;
 						distance=diff;
 					}
 				});
+				$(minEle).before(dotted);
 			},
 			endFn:function(){
-				$(dotted).before(this.ele);
-				this.ele.style.position='static';
-				this.ele.style.marginTop='10px';
-				dotted.remove();
+				if($(".dotted").length!==0){
+					dotted.before(this.ele);
+					this.ele.style.position='static';
+					this.ele.style.marginTop='10px';
+					dotted.remove();
+				}
+				
 			}
 		});
 	});

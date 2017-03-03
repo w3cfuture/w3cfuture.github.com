@@ -1,0 +1,161 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>元素拖动排序</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no">
+<style type="text/css">
+/*Reset*/
+body,div,h1,h2,h3,h4,h5,h6,hr,p,blockquote,dl,dt,dd,ul,ol,li,pre,form,fieldset,legend,button,input,textarea,th,td{margin:0;padding:0;border:0;}
+article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block;}
+body{font:12px 微软雅黑, Arial, sans-serif; -webkit-text-size-adjust:none; -webkit-user-select:none;}
+ul,ol{list-style:none;}
+a{text-decoration:none;}
+a:hover{text-decoration:none;}
+q:before,q:after{content:''}
+fieldset,img{border:0;}
+</style>
+<style type="text/css">
+	.li,.placeh{
+		width:25%;
+		height:60px;
+		margin:10px 0px 0px 10px;
+		display: inline-block;
+		vertical-align: top;
+		box-sizing: border-box;
+		
+	}
+	.placeh{
+		text-align:center;
+		border:2px dotted #ccc;
+		color:#999;
+		font-size: 14px;
+		line-height: 60px;
+	}
+	.img{
+		width:100%;
+		height:100%;
+	}
+	
+</style>
+
+</head>
+<body>
+	<ul class="ul_drag">
+		<li class="li">
+			<img src="../../../images/1.jpg" class="img">
+		</li>
+		<li class="li">
+			<img src="../../../images/2.jpg" class="img">
+		</li>
+		<li class="li">
+			<img src="../../../images/3.jpg" class="img">
+		</li>
+		<li class="li">
+			<img src="../../../images/4.jpg" class="img">
+		</li>
+		<li class="li">
+			<img src="../../../images/5.jpg" class="img">
+		</li>
+	</ul>
+</body>
+<script src="../js/drag_m.js"></script>
+<script>
+	//相对于当前窗口位置
+	function offset(ele){
+		if ( !ele ) return null;
+		var box = ele.getBoundingClientRect(), 
+		top  = box.top  + window.pageYOffset,
+		left = box.left + window.pageXOffset;
+		return {left:left, top:top};
+	}
+	//html转化成对象
+	function buildFragment(html){
+		if(typeof html=="object") return html;
+		var fragment = document.createDocumentFragment(),
+        	child,
+        	nodes=[],
+        	div=document.createElement("div");
+		div.innerHTML=html;
+		
+        // 将原生节点拷贝到fragment
+        while (child = div.firstChild) {
+            fragment.appendChild(child);
+        }
+
+        return fragment;
+	}
+	//插入元素
+	function insertAfter(newElement, targetElement) {
+		var parent = targetElement.parentNode;
+		if (parent.lastChild === targetElement) {
+			parent.appendChild(newElement);
+		} else {
+			parent.insertBefore(newElement, targetElement.nextSibling);
+		}
+	}
+	//获取索引呢
+	function index(current, obj){ 
+		for (var i = 0, length = obj.length; i<length; i++) { 
+			if (obj[i] == current) { 
+				return i; 
+			} 
+		} 
+	}
+	var divs=[].slice.call(document.querySelectorAll(".ul_drag .li"));
+	var ulBox=document.querySelector(".ul_drag");
+	var placeh=buildFragment('<li class="li placeh">鼠标松开放入</li>').querySelector(".placeh");
+	divs.forEach(function(ele){
+		new Drag(ele,{
+			//dragEle:$(this).find(".title")[0],
+			//boundary:true, //有没有边界限制
+			startFn:function(){
+				this.options.hasplaceh=false;
+			},
+			moveFn:function(){
+				var distance=1000000;
+				var minEle;
+				var minIndex;
+				var that=this;
+				var offsetX=offset(that.ele).left;
+				var offsetY=offset(that.ele).top;
+				if(!this.options.hasplaceh){
+					ulBox.insertBefore(placeh,that.ele);
+					that.options.hasplaceh=true;
+				}
+				var currentDivs=[].slice.call(document.querySelectorAll(".ul_drag .li"));
+				var dIndex=index(placeh,currentDivs);
+				currentDivs.forEach(function(div,index){
+					if(div == that.ele) return true;
+					var x=offset(div).left-offsetX;
+					var y=offset(div).top-offsetY;
+					var diff=Math.sqrt(x*x+y*y);
+					if(diff<distance){
+						minEle=div;
+						minIndex=index;
+						distance=diff;
+					}
+				});
+				if(minIndex<dIndex){
+					ulBox.insertBefore(placeh,minEle);
+				}else if(minIndex>dIndex){
+					insertAfter(placeh,minEle);
+				}
+			},
+			endFn:function(){
+				if(this.options.hasplaceh){
+					ulBox.replaceChild(this.ele,placeh);
+					this.ele.style='';
+				}
+				
+			}
+		});
+	});
+	
+	//阻止PC端默认事件
+	document.addEventListener("mousemove",function(e){e.preventDefault();},false);
+</script>
+</html>
